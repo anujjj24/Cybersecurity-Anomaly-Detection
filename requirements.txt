@@ -1,9 +1,6 @@
-
-@"
 Flask
 gunicorn
 joblib
 pandas
 numpy
 scikit-learn
-"@ | Set-Content requirements.txt

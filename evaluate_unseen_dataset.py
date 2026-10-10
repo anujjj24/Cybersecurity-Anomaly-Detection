@@ -1,3 +1,4 @@
+
 import os
 import pandas as pd
 import numpy as np
@@ -44,13 +45,16 @@ df["Target"] = df["Label"].apply(
 )
 
 X_test = df.drop(columns=["Label", "Target"])
+
 print("\nChecking feature compatibility...")
 
 print("Number of test features:", X_test.shape[1])
 print("Number of model features:", model.n_features_in_)
 
-print("Feature names match:",
-      list(X_test.columns) == list(model.feature_names_in_))
+print(
+    "Feature names match:",
+    list(X_test.columns) == list(model.feature_names_in_)
+)
 
 y_test = df["Target"]
 
@@ -62,6 +66,54 @@ print(y_test.value_counts())
 print("\nPredicting unseen dataset...")
 
 y_pred = model.predict(X_test)
+
+# Find DDoS records incorrectly predicted as Normal
+missed_indices = X_test.index[
+    (y_test == "Attack") & (y_pred == "Normal")
+]
+
+# Find DDoS records correctly predicted as Attack
+detected_indices = X_test.index[
+    (y_test == "Attack") & (y_pred == "Attack")
+]
+
+print("\nNumber of missed attacks:", len(missed_indices))
+print("Number of detected attacks:", len(detected_indices))
+
+# Compare selected feature averages
+features_to_compare = [
+    "Destination Port",
+    "Flow Duration",
+    "Total Fwd Packets",
+    "Total Backward Packets",
+    "Total Length of Fwd Packets",
+    "Total Length of Bwd Packets"
+]
+
+comparison = pd.DataFrame({
+    "Missed Attacks": X_test.loc[
+        missed_indices, features_to_compare
+    ].mean(),
+    "Detected Attacks": X_test.loc[
+        detected_indices, features_to_compare
+    ].mean()
+})
+
+print("\nMissed vs Detected DDoS Feature Averages:")
+print(comparison)
+
+# Count the model's predictions
+print("\nPrediction distribution:")
+print(pd.Series(y_pred).value_counts())
+
+# Compare actual labels with predicted labels
+print("\nActual vs Predicted labels:")
+print(pd.crosstab(
+    y_test,
+    y_pred,
+    rownames=["Actual"],
+    colnames=["Predicted"]
+))
 
 accuracy = accuracy_score(y_test, y_pred)
 

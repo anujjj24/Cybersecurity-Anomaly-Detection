@@ -4,4 +4,6 @@ __pycache__/
 .idea/
 .env
 dataset/
-"@ | Add-Content .gitignore
+"@ | Add-Content .gitignoredataset/
+uploads/*
+!uploads/.gitkeep

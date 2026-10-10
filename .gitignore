@@ -1,6 +1,7 @@
-
+@"
 .venv/
-.idea/
 __pycache__/
-*.py[cod]
+.idea/
 .env
+dataset/
+"@ | Add-Content .gitignore

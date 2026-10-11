@@ -1,9 +1,22 @@
-@"
-.venv/
+# Python
 __pycache__/
+*.py[cod]
+
+# Virtual environment and IDE
+.venv/
 .idea/
-.env
+
+# Dataset
 dataset/
-"@ | Add-Content .gitignoredataset/
+
+# Uploaded files
 uploads/*
 !uploads/.gitkeep
+
+# Secrets
+.env
+.env.*
+
+# OS files
+.DS_Store
+Thumbs.db

@@ -1,0 +1,6 @@
+Metric,Previous Model,Weighted Model
+Accuracy (%),78.9432,78.9275
+Detected Attacks,81118.0,81171.0
+Missed Attacks,46896.0,46843.0
+False Alarms,78.0,166.0
+Attack Recall (%),63.36,63.41
